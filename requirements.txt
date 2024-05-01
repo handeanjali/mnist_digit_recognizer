@@ -1,0 +1,7 @@
+Flask
+numpy
+matplotlib
+notebook
+mlflow
+keras==3.0.2
+tensorflow

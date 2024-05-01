@@ -1,0 +1,47 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MNIST Digit Recognizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>MNIST Digit Recognizer</h1>
+    <form id="prediction-form" enctype="multipart/form-data">
+        <input type="file" id="image" name="image" accept="image/*" required>
+        <button type="submit">Predict</button>
+    </form>
+    <div id="result"></div>
+    
+    <script>
+        $(document).ready(function() {
+            // Handle form submission
+            $('#prediction-form').submit(function(event) {
+                event.preventDefault(); // Prevent default form submission
+                var formData = new FormData(this);
+                // Send AJAX request to Flask backend
+                $.ajax({
+                    type: 'POST',
+                    url: '/predict',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        // Update result div with prediction
+                        $('#result').html('<p><strong><span style="font-size: 24px;">Your Handwritten Digit Appears To Be:  </span></strong> <span style="font-size: 200%; font-weight: bold;">' + response.prediction + '</span></p>');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+    
+    
+</body>
+</html>
